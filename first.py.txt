@@ -1,0 +1,37 @@
+from telethon import TelegramClient, events, functions
+import asyncio
+from telethon.sessions import StringSession
+
+# === ВАШИ ДАННЫЕ ===
+API_ID = 39015495
+API_HASH = "70712bbbb81c133662765f78b3aed6d4"
+BOT_TOKEN = "8542673729:AAFeI14J852Pt3qW7dmMFV0mY0iK0eKFl34"  # Убедись, что токен без пробелов!
+NOTIFY_CHAT = "@Michailat"  # Проверь, что это твой верный username
+
+# === ТВОЯ СТРОКА СЕССИИ (ВСТАВЬ СЮДА) ===
+SESSION_STRING = "1ApWapzMBu62-XlzJmqhID4IYJmv6KIubJWPGU6DbB6MUIOQLlnVOmnQnbokZ4Dc5e55VBrdPvEmLw0XSvGNqk1mopkL0Bqqn1KFubyw2tGbZqjE5Y8ZI6nYAALmn2u7MKTwi04NKksESZ1gzGpjM9JbYQ6R5gYD44c-kgAIyIyTcAPuAXEad39FTmqgIabN0DctGwXNzTm_MG6o6qmbT-IQZnU9RXVnwiFgl53OfRb4pmokxGeNdubsghFPzEMTpw0z897ac4ydXxICHtvA59jGYMUZ9fAmw1G2nsvqxM137dD-f1FWY6zSUBFDw2gPbmkwXKKdNlDXz9ckBQ1qhTKcn2rVWt28"
+
+# === СПИСОК ПОДАРКОВ (сокращённый для примера) ===
+GIFTS_TO_MONITOR = {
+    5983471780763796287: ("Santa Hat", 80, 2000),
+    5915502858152706668: ("Jelly Bunny", 100, 3000),
+    5868561433997870501: ("Cupid Charm", 200, 6000),
+}
+
+seen_listings = set()
+
+# Клиенты
+user_client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
+bot_client = TelegramClient("bot", API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+
+# Функции бота (check_gifts, monitoring_task, команды /start и /status)
+# ... (оставь здесь тело функций check_gifts, monitoring_task, start, status из своего старого кода, они рабочие)
+
+async def main():
+    print("Запуск бота...")
+    asyncio.create_task(monitoring_task())  # Запускаем фоновый мониторинг
+    await bot_client.run_until_disconnected()
+
+if __name__ == '__main__':
+    with bot_client:
+        bot_client.loop.run_until_complete(main())
